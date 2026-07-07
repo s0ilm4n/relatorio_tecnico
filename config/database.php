@@ -5,7 +5,7 @@ define('DB_USER', 'ngenhoca_relatorio');
 define('DB_PASS', 'iGXybti0tF45M32t');
 define('DB_NAME', 'ngenhoca_relatorio');
 
-define('APP_NAME', 'Relatório Técnico - EN 50131');
+define('APP_NAME', 'Relatório Técnico');
 define('APP_URL', 'https://drengenhocas.com/relatorio_tecnico');
 
 function getDB() {

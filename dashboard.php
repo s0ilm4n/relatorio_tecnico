@@ -33,7 +33,7 @@ require_once __DIR__ . '/includes/header.php';
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:8px;">
         <h2 style="border:none;margin:0;padding:0;">Últimos Relatórios</h2>
         <div style="display:flex;gap:8px;flex-wrap:wrap;">
-            <a href="novo_relatorio.php" class="btn btn-success">+ Alarme (EN 50131)</a>
+            <a href="novo_relatorio.php" class="btn btn-success">+ Alarme</a>
             <a href="novo_relatorio_cctv.php" class="btn btn-success" style="background:#0f5b8a;">+ CCTV</a>
             <a href="novo_relatorio_acessos.php" class="btn btn-success" style="background:#6a1b9a;">+ Controlo Acessos</a>
             <?php if (isAdmin()): ?>
