@@ -69,8 +69,10 @@ require_once __DIR__ . '/includes/header.php';
                         <td><?= htmlspecialchars($r['tecnico_nome']) ?></td>
                         <td><span class="tipo-badge <?= $r['tipo'] ?>"><?= 
                             $r['tipo'] === 'cctv' ? '📹 CCTV' : 
-                            ($r['tipo'] === 'acessos' ? '🔐 Acessos' : 
-                            ($r['tipo'] === 'instalacao' ? '🚨 Alarme' : '🔧 Manutenção')) 
+                            ($r['tipo'] === 'acessos' ? '🔐 Acessos' : '🚨 Alarme') 
+                        ?></span>
+                        <span class="tipo-badge" style="background:#fff3e0;color:#e65100;font-size:0.8em;"><?= 
+                            ($r['tipo_obra'] ?? 'instalacao') === 'instalacao' ? '🛠 Instalação' : '🔧 Manutenção' 
                         ?></span></td>
                         <td class="actions">
                             <a href="ver_relatorio.php?id=<?= $r['id'] ?>" class="btn btn-sm btn-primary">Ver</a>

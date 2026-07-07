@@ -93,6 +93,13 @@ $titulos_secoes = [
                 <tr>
                     <td>Técnico:</td>
                     <td><?= $dados_preenchidos ? htmlspecialchars($r['tecnico_nome']) : '____________________________' ?></td>
+                    <td>Tipo / Obra:</td>
+                    <td><?= $dados_preenchidos ? 
+                        ($r['tipo'] === 'cctv' ? '📹 CCTV' : ($r['tipo'] === 'acessos' ? '🔐 Acessos' : '🚨 Alarme')) . ' / ' . 
+                        (($r['tipo_obra'] ?? 'instalacao') === 'instalacao' ? 'Instalação' : 'Manutenção') 
+                    : '[ ] CCTV [ ] Acessos [ ] Alarme' ?></td>
+                </tr>
+                <tr>
                     <td>H.Início/Fim:</td>
                     <td><?= $dados_preenchidos ? ($r['hora_inicio'] ?? '___:___') . ' / ' . ($r['hora_fim'] ?? '___:___') : '___:___ / ___:___' ?></td>
                 </tr>

@@ -55,7 +55,15 @@ require_once __DIR__ . '/includes/header.php';
         </div>
         <div class="form-row">
             <div><strong>Técnico:</strong> <?= htmlspecialchars($r['tecnico_nome']) ?></div>
-            <div><strong>Tipo:</strong> <?= $r['tipo'] === 'cctv' ? '📹 CCTV' : ($r['tipo'] === 'acessos' ? '🔐 Controlo Acessos' : ($r['tipo'] === 'instalacao' ? 'Instalação' : 'Manutenção Preventiva')) ?></div>
+            <div><strong>Tipo:</strong> 
+                <span class="tipo-badge <?= $r['tipo'] ?>"><?= 
+                    $r['tipo'] === 'cctv' ? '📹 CCTV' : 
+                    ($r['tipo'] === 'acessos' ? '🔐 Acessos' : '🚨 Alarme') 
+                ?></span>
+                <span class="tipo-badge" style="background:#fff3e0;color:#e65100;">
+                    <?= ($r['tipo_obra'] ?? 'instalacao') === 'instalacao' ? '🛠 Instalação' : '🔧 Manutenção' ?>
+                </span>
+            </div>
         </div>
         <div class="form-row">
             <div><strong>Central:</strong> <?= htmlspecialchars($r['central_modelo']) ?></div>

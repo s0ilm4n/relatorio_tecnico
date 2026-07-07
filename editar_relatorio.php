@@ -68,10 +68,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (!$cliente_id) throw new Exception('Selecione ou crie um cliente.');
 
         // Atualizar relatório
-        $stmt = $db->prepare("UPDATE relatorios SET cliente_id=?, tipo=?, data=?, hora_inicio=?, hora_fim=?, central_modelo=?, grau_sistema=?, notas=?, material_substituido=? WHERE id=?");
+        $stmt = $db->prepare("UPDATE relatorios SET cliente_id=?, tipo=?, tipo_obra=?, data=?, hora_inicio=?, hora_fim=?, central_modelo=?, grau_sistema=?, notas=?, material_substituido=? WHERE id=?");
         $stmt->execute([
             $cliente_id,
             $_POST['tipo'] ?? $r['tipo'],
+            $_POST['tipo_obra'] ?? $r['tipo_obra'] ?? 'instalacao',
             $_POST['data'],
             $_POST['hora_inicio'] ?? '',
             $_POST['hora_fim'] ?? '',
@@ -87,7 +88,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // Reconstruir seções com base no tipo
         $secoes_def = [];
-        if ($r['tipo'] === 'cctv') {
+        if ($_POST['tipo'] === 'cctv') {
             $secoes_def = [
                 'info_sistema' => [
                     ['gravador', 'Gravador (NVR/DVR): Marca/Modelo e Nº de Série'],
@@ -126,7 +127,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     ['limpeza_local', 'Limpeza do Local: Remoção de resíduos e resguardos'],
                 ],
             ];
-        } elseif ($r['tipo'] === 'acessos') {
+        } elseif ($_POST['tipo'] === 'acessos') {
             $secoes_def = [
                 'info_sistema' => [
                     ['controladora', 'Central/Controladora de Acessos: Marca, Modelo e Nº de Série'],
@@ -249,6 +250,7 @@ require_once __DIR__ . '/includes/header.php';
         <h2 style="border:none;margin:0;padding:0;">✏️ Editar Relatório #<?= $id ?></h2>
         <div style="display:flex;gap:8px;">
             <span class="badge-tipo <?= $r['tipo'] ?>"><?= $tipo_label ?></span>
+            <span class="badge-tipo" style="background:#fff3e0;color:#e65100;"><?= ($r['tipo_obra'] ?? 'instalacao') === 'instalacao' ? '🛠 Instalação' : '🔧 Manutenção' ?></span>
             <a href="ver_relatorio.php?id=<?= $id ?>" class="btn btn-outline" style="color:#333;border-color:#ccc;">Cancelar</a>
         </div>
     </div>
@@ -271,10 +273,16 @@ require_once __DIR__ . '/includes/header.php';
                 <div class="form-group">
                     <label for="tipo">Tipo de Relatório</label>
                     <select id="tipo" name="tipo" class="form-control">
-                        <option value="instalacao" <?= $r['tipo'] === 'instalacao' ? 'selected' : '' ?>>Instalação</option>
-                        <option value="manutencao" <?= $r['tipo'] === 'manutencao' ? 'selected' : '' ?>>Manutenção Preventiva</option>
+                        <option value="alarme" <?= $r['tipo'] === 'alarme' ? 'selected' : '' ?>>🚨 Alarme</option>
                         <option value="cctv" <?= $r['tipo'] === 'cctv' ? 'selected' : '' ?>>📹 CCTV</option>
                         <option value="acessos" <?= $r['tipo'] === 'acessos' ? 'selected' : '' ?>>🔐 Controlo Acessos</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="tipo_obra">Tipo de Obra</label>
+                    <select id="tipo_obra" name="tipo_obra" class="form-control">
+                        <option value="instalacao" <?= ($r['tipo_obra'] ?? 'instalacao') === 'instalacao' ? 'selected' : '' ?>>Instalação</option>
+                        <option value="manutencao" <?= ($r['tipo_obra'] ?? '') === 'manutencao' ? 'selected' : '' ?>>Manutenção</option>
                     </select>
                 </div>
             </div>

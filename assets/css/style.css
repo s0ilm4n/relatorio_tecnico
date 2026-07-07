@@ -190,7 +190,8 @@ table .actions { display: flex; gap: 6px; }
 .tipo-badge.cctv { background: #e3f2fd; color: #0d47a1; }
 .tipo-badge.acessos { background: #f3e5f5; color: #6a1b9a; }
 .tipo-badge.instalacao,
-.tipo-badge.manutencao { background: #e8f5e9; color: #1b5e20; }
+.tipo-badge.manutencao,
+.tipo-badge.alarme { background: #e8f5e9; color: #1b5e20; }
 
 /* === RESPONSIVE === */
 @media (max-width: 768px) {

@@ -24,10 +24,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         verify_csrf();
 
-        $stmt = $db->prepare("INSERT INTO relatorios (user_id, cliente_id, tipo, data, hora_inicio, hora_fim, central_modelo, grau_sistema, notas, material_substituido) VALUES (?, ?, 'cctv', ?, ?, ?, ?, ?, ?, ?)");
+        $stmt = $db->prepare("INSERT INTO relatorios (user_id, cliente_id, tipo, tipo_obra, data, hora_inicio, hora_fim, central_modelo, grau_sistema, notas, material_substituido) VALUES (?, ?, 'cctv', ?, ?, ?, ?, ?, ?, ?, ?)");
         $stmt->execute([
             $_SESSION['user_id'],
             $cliente_id,
+            $_POST['tipo_obra'] ?? 'instalacao',
             $_POST['data'],
             $_POST['hora_inicio'],
             $_POST['hora_fim'],
@@ -127,10 +128,10 @@ require_once __DIR__ . '/includes/header.php';
                     <input type="date" id="data" name="data" class="form-control" required>
                 </div>
                 <div class="form-group">
-                    <label for="tipo_intervencao">Tipo de Intervenção</label>
-                    <select id="tipo_intervencao" name="tipo" class="form-control">
-                        <option value="instalacao">Instalação Inicial</option>
-                        <option value="manutencao" selected>Manutenção Preventiva</option>
+                    <label for="tipo_obra">Tipo de Obra</label>
+                    <select id="tipo_obra" name="tipo_obra" class="form-control">
+                        <option value="instalacao" selected>Instalação</option>
+                        <option value="manutencao">Manutenção</option>
                     </select>
                 </div>
             </div>

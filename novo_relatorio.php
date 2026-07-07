@@ -31,11 +31,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         verify_csrf();
 
         // 2. Criar relatório
-        $stmt = $db->prepare("INSERT INTO relatorios (user_id, cliente_id, tipo, data, hora_inicio, hora_fim, central_modelo, grau_sistema, notas, material_substituido) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmt = $db->prepare("INSERT INTO relatorios (user_id, cliente_id, tipo, tipo_obra, data, hora_inicio, hora_fim, central_modelo, grau_sistema, notas, material_substituido) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
         $stmt->execute([
             $_SESSION['user_id'],
             $cliente_id,
-            $_POST['tipo'] ?? 'manutencao',
+            'alarme',
+            $_POST['tipo_obra'] ?? 'manutencao',
             $_POST['data'],
             $_POST['hora_inicio'],
             $_POST['hora_fim'],
@@ -109,8 +110,8 @@ require_once __DIR__ . '/includes/header.php';
 ?>
 
 <div class="card">
-    <h2>Novo Relatório Técnico</h2>
-    <p style="color:#888;font-size:0.9em;margin-bottom:16px;">Checklist de Manutenção/Instalação conforme EN 50131</p>
+    <h2>🚨 Novo Relatório — Alarme</h2>
+    <p style="color:#888;font-size:0.9em;margin-bottom:16px;">Checklist de Manutenção/Instalação de Sistemas de Alarme</p>
 
     <?php if (isset($erro)): ?>
         <div class="alert alert-danger"><?= e($erro) ?></div>
@@ -127,9 +128,9 @@ require_once __DIR__ . '/includes/header.php';
                     <input type="date" id="data" name="data" class="form-control" required>
                 </div>
                 <div class="form-group">
-                    <label for="tipo">Tipo de Intervenção *</label>
-                    <select id="tipo" name="tipo" class="form-control" required>
-                        <option value="manutencao">Manutenção Preventiva</option>
+                    <label for="tipo_obra">Tipo de Obra *</label>
+                    <select id="tipo_obra" name="tipo_obra" class="form-control" required>
+                        <option value="manutencao">Manutenção</option>
                         <option value="instalacao">Instalação</option>
                     </select>
                 </div>

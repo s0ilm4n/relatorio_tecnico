@@ -108,7 +108,9 @@ $html = <<<HTML
         <table>
             <tr><td class="label">Cliente:</td><td>{$r['cliente_nome']}</td><td class="label">Data:</td><td>{$r['data']}</td></tr>
             <tr><td class="label">Morada:</td><td>{$r['cliente_morada']}</td><td class="label">NIF:</td><td>{$r['cliente_nif']}</td></tr>
-            <tr><td class="label">Técnico:</td><td>{$r['tecnico_nome']}</td><td class="label">Tipo:</td><td>{$r['tipo']}</td></tr>
+            <tr><td class="label\">Técnico:</td><td>{$r['tecnico_nome']}</td><td class="label\">Tipo:</td><td>" . 
+                ($r['tipo'] === 'cctv' ? '📹 CCTV' : ($r['tipo'] === 'acessos' ? '🔐 Acessos' : '🚨 Alarme')) . 
+                " / " . (($r['tipo_obra'] ?? 'instalacao') === 'instalacao' ? 'Instalação' : 'Manutenção') . "</td></tr>
         </table>
     </div>
 
