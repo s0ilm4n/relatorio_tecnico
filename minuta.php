@@ -39,6 +39,10 @@ $titulos_secoes = [
     'gravacao_rede' => '4. GRAVAÇÃO, PROCESSAMENTO E REDE',
     'rgpd' => '5. CONFORMIDADE LEGAL E RGPD',
     'testes_entrega' => '6. TESTES DE SISTEMA E ENTREGA',
+    // Access Control sections
+    'leitores' => '3. LEITORES E CREDENCIAIS',
+    'fechaduras' => '4. FECHADURAS E MECANISMOS',
+    'software_config' => '5. SOFTWARE E CONFIGURAÇÃO',
 ];
 
 ?>
@@ -61,7 +65,7 @@ $titulos_secoes = [
 
         <div class="minuta-header">
             <h1>RELATÓRIO TÉCNICO</h1>
-            <p>Alarmes & CCTV — Norma EN 50131</p>
+            <p>Alarmes & CCTV & Controlo Acessos — Norma EN 50131</p>
             <p style="font-size:0.8em;margin-top:4px;color:#999;">📌 Documento para preenchimento manual em obra (sem necessidade de internet)</p>
         </div>
 

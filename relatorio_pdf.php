@@ -39,6 +39,10 @@ $titulos_secoes = [
     'gravacao_rede' => '4. GRAVAÇÃO, PROCESSAMENTO E REDE',
     'rgpd' => '5. CONFORMIDADE LEGAL E RGPD',
     'testes_entrega' => '6. TESTES DE SISTEMA E ENTREGA',
+    // Access Control sections
+    'leitores' => '3. LEITORES E CREDENCIAIS',
+    'fechaduras' => '4. FECHADURAS E MECANISMOS',
+    'software_config' => '5. SOFTWARE E CONFIGURAÇÃO',
 ];
 
 // Build HTML
@@ -98,7 +102,7 @@ $html = <<<HTML
 </head>
 <body>
     <h1>RELATÓRIO TÉCNICO</h1>
-    <h2>Alarmes & CCTV — EN 50131</h2>
+    <h2>Alarmes & CCTV & Controlo Acessos — EN 50131</h2>
 
     <div class="header-info">
         <table>

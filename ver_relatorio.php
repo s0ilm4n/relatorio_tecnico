@@ -52,7 +52,7 @@ require_once __DIR__ . '/includes/header.php';
         </div>
         <div class="form-row">
             <div><strong>Técnico:</strong> <?= htmlspecialchars($r['tecnico_nome']) ?></div>
-            <div><strong>Tipo:</strong> <?= $r['tipo'] === 'cctv' ? '📹 CCTV' : ($r['tipo'] === 'instalacao' ? 'Instalação' : 'Manutenção Preventiva') ?></div>
+            <div><strong>Tipo:</strong> <?= $r['tipo'] === 'cctv' ? '📹 CCTV' : ($r['tipo'] === 'acessos' ? '🔐 Controlo Acessos' : ($r['tipo'] === 'instalacao' ? 'Instalação' : 'Manutenção Preventiva')) ?></div>
         </div>
         <div class="form-row">
             <div><strong>Central:</strong> <?= htmlspecialchars($r['central_modelo']) ?></div>
@@ -76,6 +76,17 @@ require_once __DIR__ . '/includes/header.php';
             'testes_funcionais' => '3. TESTES FUNCIONAIS (ZONAS & SABOTAGEM)',
             'dispositivos_aviso' => '4. DISPOSITIVOS DE AVISO & COMUNICAÇÃO (CRA)',
             'encerramento' => '5. ENCERRAMENTO DE OBRA & LEGAL',
+            // CCTV sections
+            'info_sistema' => '1. INFORMAÇÃO DO SISTEMA',
+            'infraestrutura' => '2. INFRAESTRUTURA E CABLAGEM',
+            'camaras' => '3. UNIDADES DE CAPTURA (CÂMARAS)',
+            'gravacao_rede' => '4. GRAVAÇÃO, PROCESSAMENTO E REDE',
+            'rgpd' => '5. CONFORMIDADE LEGAL E RGPD',
+            'testes_entrega' => '6. TESTES DE SISTEMA E ENTREGA',
+            // Access Control sections
+            'leitores' => '3. LEITORES E CREDENCIAIS',
+            'fechaduras' => '4. FECHADURAS E MECANISMOS',
+            'software_config' => '5. SOFTWARE E CONFIGURAÇÃO',
         ];
         ?>
         <h3><?= $titulos[$secao_nome] ?? $secao_nome ?></h3>

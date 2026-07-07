@@ -48,7 +48,7 @@ try {
             id INT AUTO_INCREMENT PRIMARY KEY,
             user_id INT NOT NULL,
             cliente_id INT NOT NULL,
-            tipo ENUM('instalacao','manutencao','cctv') DEFAULT 'manutencao',
+            tipo ENUM('instalacao','manutencao','cctv','acessos') DEFAULT 'manutencao',
             data DATE NOT NULL,
             hora_inicio TIME,
             hora_fim TIME,
