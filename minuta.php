@@ -32,6 +32,13 @@ $titulos_secoes = [
     'testes_funcionais' => '3. TESTES FUNCIONAIS (ZONAS & SABOTAGEM)',
     'dispositivos_aviso' => '4. DISPOSITIVOS DE AVISO & COMUNICAÇÃO (CRA)',
     'encerramento' => '5. ENCERRAMENTO DE OBRA & LEGAL',
+    // CCTV sections
+    'info_sistema' => '1. INFORMAÇÃO DO SISTEMA',
+    'infraestrutura' => '2. INFRAESTRUTURA E CABLAGEM',
+    'camaras' => '3. UNIDADES DE CAPTURA (CÂMARAS)',
+    'gravacao_rede' => '4. GRAVAÇÃO, PROCESSAMENTO E REDE',
+    'rgpd' => '5. CONFORMIDADE LEGAL E RGPD',
+    'testes_entrega' => '6. TESTES DE SISTEMA E ENTREGA',
 ];
 
 ?>

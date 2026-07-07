@@ -33,7 +33,8 @@ require_once __DIR__ . '/includes/header.php';
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:8px;">
         <h2 style="border:none;margin:0;padding:0;">Últimos Relatórios</h2>
         <div style="display:flex;gap:8px;flex-wrap:wrap;">
-            <a href="novo_relatorio.php" class="btn btn-success">+ Novo Relatório</a>
+            <a href="novo_relatorio.php" class="btn btn-success">+ Alarme (EN 50131)</a>
+            <a href="novo_relatorio_cctv.php" class="btn btn-success" style="background:#0f5b8a;">+ CCTV</a>
             <?php if (isAdmin()): ?>
                 <a href="clientes.php" class="btn btn-primary">Clientes</a>
                 <a href="utilizadores.php" class="btn btn-outline" style="color:#333;border-color:#ccc;">Utilizadores</a>
@@ -64,7 +65,7 @@ require_once __DIR__ . '/includes/header.php';
                         <td><?= date('d/m/Y', strtotime($r['data'])) ?></td>
                         <td><?= htmlspecialchars($r['cliente_nome']) ?></td>
                         <td><?= htmlspecialchars($r['tecnico_nome']) ?></td>
-                        <td><?= $r['tipo'] === 'instalacao' ? 'Instalação' : 'Manutenção' ?></td>
+                        <td><?= $r['tipo'] === 'instalacao' ? 'Instalação' : ($r['tipo'] === 'cctv' ? '📹 CCTV' : 'Manutenção') ?></td>
                         <td class="actions">
                             <a href="ver_relatorio.php?id=<?= $r['id'] ?>" class="btn btn-sm btn-primary">Ver</a>
                             <a href="relatorio_pdf.php?id=<?= $r['id'] ?>" class="btn btn-sm btn-outline" style="color:#333;border-color:#ccc;">PDF</a>

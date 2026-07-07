@@ -52,7 +52,7 @@ require_once __DIR__ . '/includes/header.php';
         </div>
         <div class="form-row">
             <div><strong>Técnico:</strong> <?= htmlspecialchars($r['tecnico_nome']) ?></div>
-            <div><strong>Tipo:</strong> <?= $r['tipo'] === 'instalacao' ? 'Instalação' : 'Manutenção Preventiva' ?></div>
+            <div><strong>Tipo:</strong> <?= $r['tipo'] === 'cctv' ? '📹 CCTV' : ($r['tipo'] === 'instalacao' ? 'Instalação' : 'Manutenção Preventiva') ?></div>
         </div>
         <div class="form-row">
             <div><strong>Central:</strong> <?= htmlspecialchars($r['central_modelo']) ?></div>
