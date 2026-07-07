@@ -8,14 +8,17 @@ $msg = '';
 // Criar cliente
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
     if ($_POST['action'] === 'create') {
+        verify_csrf();
         $stmt = $db->prepare("INSERT INTO clientes (nome, morada, telefone, email, nif) VALUES (?, ?, ?, ?, ?)");
         $stmt->execute([$_POST['nome'], $_POST['morada'] ?? '', $_POST['telefone'] ?? '', $_POST['email'] ?? '', $_POST['nif'] ?? '']);
         $msg = 'Cliente adicionado.';
     } elseif ($_POST['action'] === 'edit' && isset($_POST['id'])) {
+        verify_csrf();
         $stmt = $db->prepare("UPDATE clientes SET nome=?, morada=?, telefone=?, email=?, nif=? WHERE id=?");
         $stmt->execute([$_POST['nome'], $_POST['morada'] ?? '', $_POST['telefone'] ?? '', $_POST['email'] ?? '', $_POST['nif'] ?? '', $_POST['id']]);
         $msg = 'Cliente atualizado.';
     } elseif ($_POST['action'] === 'delete' && isset($_POST['id'])) {
+        verify_csrf();
         $stmt = $db->prepare("DELETE FROM clientes WHERE id=?");
         $stmt->execute([$_POST['id']]);
         $msg = 'Cliente eliminado.';
@@ -43,6 +46,7 @@ require_once __DIR__ . '/includes/header.php';
         <h3 style="margin-bottom:12px;">Novo Cliente</h3>
         <form method="POST">
             <input type="hidden" name="action" value="create">
+            <?= csrf_field() ?>
             <div class="form-group">
                 <label>Nome *</label>
                 <input type="text" name="nome" class="form-control" required>
@@ -73,9 +77,10 @@ require_once __DIR__ . '/includes/header.php';
                     <td><?= htmlspecialchars($c['email']) ?></td>
                     <td><?= $c['total_relatorios'] ?></td>
                     <td>
-                        <form method="POST" style="display:inline;" onsubmit="return confirm('Eliminar <?= htmlspecialchars($c['nome']) ?>?')">
+                        <form method="POST" style="display:inline;" onsubmit="return confirm('Eliminar <?= e($c['nome']) ?>?')">
                             <input type="hidden" name="action" value="delete">
                             <input type="hidden" name="id" value="<?= $c['id'] ?>">
+                            <?= csrf_field() ?>
                             <button type="submit" class="btn btn-sm btn-danger">Eliminar</button>
                         </form>
                     </td>

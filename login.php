@@ -39,6 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <label for="password">Palavra-passe</label>
                 <input type="password" id="password" name="password" class="form-control" required>
             </div>
+            <?= csrf_field() ?>
             <button type="submit" class="btn btn-primary btn-block">Entrar</button>
         </form>
         <p style="text-align:center;margin-top:16px;font-size:0.85em;color:#888;">Norma EN 50131 - Grau 1 a 4</p>

@@ -28,6 +28,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             throw new Exception('Selecione ou crie um cliente.');
         }
 
+        verify_csrf();
+
         // 2. Criar relatório
         $stmt = $db->prepare("INSERT INTO relatorios (user_id, cliente_id, tipo, data, hora_inicio, hora_fim, central_modelo, grau_sistema, notas, material_substituido) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
         $stmt->execute([
@@ -98,7 +100,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     } catch (Exception $e) {
         $db->rollBack();
-        $erro = 'Erro ao guardar: ' . $e->getMessage();
+        $erro = 'Erro ao guardar: ocorreu um erro inesperado.';
     }
 }
 
@@ -111,10 +113,11 @@ require_once __DIR__ . '/includes/header.php';
     <p style="color:#888;font-size:0.9em;margin-bottom:16px;">Checklist de Manutenção/Instalação conforme EN 50131</p>
 
     <?php if (isset($erro)): ?>
-        <div class="alert alert-danger"><?= $erro ?></div>
+        <div class="alert alert-danger"><?= e($erro) ?></div>
     <?php endif; ?>
 
     <form method="POST" id="form-relatorio">
+        <?= csrf_field() ?>
         <!-- DADOS DO RELATÓRIO -->
         <div class="card" style="box-shadow:none;border:1px solid #eee;padding:20px;margin-bottom:20px;">
             <h3 style="margin-bottom:16px;font-size:1.1em;">📋 Dados do Relatório</h3>

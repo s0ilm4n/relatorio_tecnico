@@ -1,13 +1,12 @@
 <?php
 // Configuração da Base de Dados
 define('DB_HOST', 'localhost');
-define('DB_USER', 'root');
-define('DB_PASS', '13071990');
-define('DB_NAME', 'relatorio_tecnico');
+define('DB_USER', 'ngenhoca_relatorio');
+define('DB_PASS', 'iGXybti0tF45M32t');
+define('DB_NAME', 'ngenhoca_relatorio');
 
-// Configurações da app
 define('APP_NAME', 'Relatório Técnico - EN 50131');
-define('APP_URL', 'http://192.168.1.142/relatorio_tecnico');
+define('APP_URL', 'https://drengenhocas.com/relatorio_tecnico');
 
 function getDB() {
     static $pdo = null;
@@ -24,7 +23,8 @@ function getDB() {
                 ]
             );
         } catch (PDOException $e) {
-            die('Erro de ligação à BD: ' . $e->getMessage());
+            error_log('DB Error: ' . $e->getMessage());
+            die('Erro de ligação à base de dados.');
         }
     }
     return $pdo;

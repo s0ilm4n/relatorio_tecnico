@@ -1,6 +1,8 @@
 <?php
 // Minuta para papel — versão imprimível para preenchimento manual (offline)
 require_once __DIR__ . '/config/database.php';
+require_once __DIR__ . '/includes/auth.php';
+requireLogin();
 
 $id = $_GET['id'] ?? 0;
 $dados_preenchidos = false;

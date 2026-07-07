@@ -73,7 +73,12 @@ require_once __DIR__ . '/includes/header.php';
                             <a href="relatorio_pdf.php?id=<?= $r['id'] ?>" class="btn btn-sm btn-outline" style="color:#333;border-color:#ccc;">PDF</a>
                             <a href="minuta.php?id=<?= $r['id'] ?>" class="btn btn-sm btn-outline" style="color:#333;border-color:#ccc;">Minuta</a>
                             <?php if (isAdmin()): ?>
-                            <a href="eliminar_relatorio.php?id=<?= $r['id'] ?>" class="btn btn-sm btn-danger" onclick="return confirmDelete('Eliminar relatório #<?= $r['id'] ?>?')">Eliminar</a>
+                            <form method="POST" style="display:inline;" onsubmit="return confirm('Eliminar relatório #<?= $r['id'] ?>?')">
+                                <input type="hidden" name="id" value="<?= $r['id'] ?>">
+                                <input type="hidden" name="confirmar" value="1">
+                                <?= csrf_field() ?>
+                                <button type="submit" class="btn btn-sm btn-danger">Eliminar</button>
+                            </form>
                             <?php endif; ?>
                         </td>
                     </tr>

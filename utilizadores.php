@@ -8,11 +8,13 @@ $msg = '';
 // Criar/editar utilizador
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
     if ($_POST['action'] === 'create') {
+        verify_csrf();
         $hash = password_hash($_POST['password'], PASSWORD_DEFAULT);
         $stmt = $db->prepare("INSERT INTO users (username, password_hash, nome, role) VALUES (?, ?, ?, ?)");
         $stmt->execute([$_POST['username'], $hash, $_POST['nome'], $_POST['role']]);
         $msg = 'Utilizador criado.';
     } elseif ($_POST['action'] === 'edit' && isset($_POST['id'])) {
+        verify_csrf();
         if (!empty($_POST['password'])) {
             $hash = password_hash($_POST['password'], PASSWORD_DEFAULT);
             $stmt = $db->prepare("UPDATE users SET username=?, nome=?, role=?, password_hash=? WHERE id=?");
@@ -23,6 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
         }
         $msg = 'Utilizador atualizado.';
     } elseif ($_POST['action'] === 'delete' && isset($_POST['id'])) {
+        verify_csrf();
         $stmt = $db->prepare("DELETE FROM users WHERE id=? AND role != 'admin'");
         $stmt->execute([$_POST['id']]);
         $msg = 'Utilizador eliminado.';
@@ -50,6 +53,7 @@ require_once __DIR__ . '/includes/header.php';
         <h3 style="margin-bottom:12px;">Novo Utilizador</h3>
         <form method="POST">
             <input type="hidden" name="action" value="create">
+            <?= csrf_field() ?>
             <div class="form-row">
                 <div class="form-group">
                     <label>Username *</label>
@@ -90,13 +94,14 @@ require_once __DIR__ . '/includes/header.php';
                     <td><?= $u['role'] ?></td>
                     <td><?= $u['created_at'] ?></td>
                     <td>
-                        <?php if ($u['role'] !== 'admin'): ?>
-                        <form method="POST" style="display:inline;" onsubmit="return confirm('Eliminar <?= htmlspecialchars($u['nome']) ?>?')">
-                            <input type="hidden" name="action" value="delete">
-                            <input type="hidden" name="id" value="<?= $u['id'] ?>">
-                            <button type="submit" class="btn btn-sm btn-danger">Eliminar</button>
-                        </form>
-                        <?php endif; ?>
+                            <?php if (isAdmin()): ?>
+                            <form method="POST" style="display:inline;" onsubmit="return confirm('Eliminar <?= htmlspecialchars($u['nome']) ?>?')">
+                                <input type="hidden" name="action" value="delete">
+                                <input type="hidden" name="id" value="<?= $u['id'] ?>">
+                                <?= csrf_field() ?>
+                                <button type="submit" class="btn btn-sm btn-danger">Eliminar</button>
+                            </form>
+                            <?php endif; ?>
                     </td>
                 </tr>
                 <?php endforeach; ?>
