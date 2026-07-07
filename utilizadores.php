@@ -45,40 +45,91 @@ require_once __DIR__ . '/includes/header.php';
     <?php endif; ?>
 
     <div style="margin-bottom:20px;">
-        <button onclick="toggleForm()" class="btn btn-success">+ Novo Utilizador</button>
+        <button onclick="toggleForm('novo')" class="btn btn-success">+ Novo Utilizador</button>
         <a href="dashboard.php" class="btn btn-outline" style="color:#333;border-color:#ccc;">Voltar</a>
     </div>
 
-    <div id="user-form" style="display:none;background:#f8f9fa;padding:20px;border-radius:8px;margin-bottom:20px;">
-        <h3 style="margin-bottom:12px;">Novo Utilizador</h3>
-        <form method="POST">
-            <input type="hidden" name="action" value="create">
-            <?= csrf_field() ?>
-            <div class="form-row">
-                <div class="form-group">
-                    <label>Username *</label>
-                    <input type="text" name="username" class="form-control" required>
-                </div>
-                <div class="form-group">
-                    <label>Nome *</label>
-                    <input type="text" name="nome" class="form-control" required>
-                </div>
+    <!-- Modal Novo Utilizador -->
+    <div id="modal-novo" class="modal-overlay" style="display:none;">
+        <div class="modal-box">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+                <h3 style="margin:0;">+ Novo Utilizador</h3>
+                <button onclick="fecharModal('modal-novo')" style="background:none;border:none;font-size:1.5em;cursor:pointer;color:#888;">&times;</button>
             </div>
-            <div class="form-row">
-                <div class="form-group">
-                    <label>Password *</label>
-                    <input type="password" name="password" class="form-control" required>
+            <form method="POST">
+                <input type="hidden" name="action" value="create">
+                <?= csrf_field() ?>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Username *</label>
+                        <input type="text" name="username" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Nome *</label>
+                        <input type="text" name="nome" class="form-control" required>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label>Função</label>
-                    <select name="role" class="form-control">
-                        <option value="tecnico">Técnico</option>
-                        <option value="admin">Admin</option>
-                    </select>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Password *</label>
+                        <input type="password" name="password" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Função</label>
+                        <select name="role" class="form-control">
+                            <option value="tecnico">Técnico</option>
+                            <option value="admin">Admin</option>
+                        </select>
+                    </div>
                 </div>
+                <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:16px;">
+                    <button type="button" onclick="fecharModal('modal-novo')" class="btn btn-outline" style="color:#333;border-color:#ccc;">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Criar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Editar Utilizador -->
+    <div id="modal-editar" class="modal-overlay" style="display:none;">
+        <div class="modal-box">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+                <h3 style="margin:0;">✏️ Editar Utilizador</h3>
+                <button onclick="fecharModal('modal-editar')" style="background:none;border:none;font-size:1.5em;cursor:pointer;color:#888;">&times;</button>
             </div>
-            <button type="submit" class="btn btn-primary">Criar</button>
-        </form>
+            <form method="POST" id="form-editar">
+                <input type="hidden" name="action" value="edit">
+                <input type="hidden" name="id" id="edit-id">
+                <?= csrf_field() ?>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Username *</label>
+                        <input type="text" name="username" id="edit-username" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Nome *</label>
+                        <input type="text" name="nome" id="edit-nome" class="form-control" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Nova Password <span style="color:#888;font-weight:normal;">(deixar vazio para manter)</span></label>
+                        <input type="password" name="password" class="form-control" placeholder="Nova password...">
+                    </div>
+                    <div class="form-group">
+                        <label>Função</label>
+                        <select name="role" id="edit-role" class="form-control">
+                            <option value="tecnico">Técnico</option>
+                            <option value="admin">Admin</option>
+                        </select>
+                    </div>
+                </div>
+                <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:16px;">
+                    <button type="button" onclick="fecharModal('modal-editar')" class="btn btn-outline" style="color:#333;border-color:#ccc;">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Guardar Alterações</button>
+                </div>
+            </form>
+        </div>
     </div>
 
     <div class="table-responsive">
@@ -91,17 +142,18 @@ require_once __DIR__ . '/includes/header.php';
                 <tr>
                     <td><?= htmlspecialchars($u['username']) ?></td>
                     <td><?= htmlspecialchars($u['nome']) ?></td>
-                    <td><?= $u['role'] ?></td>
-                    <td><?= $u['created_at'] ?></td>
+                    <td><span class="badge-role <?= $u['role'] ?>"><?= $u['role'] ?></span></td>
+                    <td><?= date('d/m/Y', strtotime($u['created_at'])) ?></td>
                     <td>
-                            <?php if (isAdmin()): ?>
-                            <form method="POST" style="display:inline;" onsubmit="return confirm('Eliminar <?= htmlspecialchars($u['nome']) ?>?')">
-                                <input type="hidden" name="action" value="delete">
-                                <input type="hidden" name="id" value="<?= $u['id'] ?>">
-                                <?= csrf_field() ?>
-                                <button type="submit" class="btn btn-sm btn-danger">Eliminar</button>
-                            </form>
-                            <?php endif; ?>
+                        <button onclick="editarUtilizador(<?= $u['id'] ?>, '<?= htmlspecialchars($u['username'], ENT_QUOTES) ?>', '<?= htmlspecialchars($u['nome'], ENT_QUOTES) ?>', '<?= $u['role'] ?>')" class="btn btn-sm btn-primary">Editar</button>
+                        <?php if ($u['role'] !== 'admin' || $u['id'] !== $_SESSION['user_id']): ?>
+                        <form method="POST" style="display:inline;" onsubmit="return confirm('Eliminar <?= htmlspecialchars($u['nome']) ?>?')">
+                            <input type="hidden" name="action" value="delete">
+                            <input type="hidden" name="id" value="<?= $u['id'] ?>">
+                            <?= csrf_field() ?>
+                            <button type="submit" class="btn btn-sm btn-danger">Eliminar</button>
+                        </form>
+                        <?php endif; ?>
                     </td>
                 </tr>
                 <?php endforeach; ?>
@@ -110,11 +162,77 @@ require_once __DIR__ . '/includes/header.php';
     </div>
 </div>
 
-<script>
-function toggleForm() {
-    var f = document.getElementById('user-form');
-    f.style.display = f.style.display === 'none' ? 'block' : 'none';
+<style>
+.modal-overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
+.modal-box {
+    background: #fff;
+    border-radius: 12px;
+    padding: 28px;
+    max-width: 500px;
+    width: 90%;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+    max-height: 90vh;
+    overflow-y: auto;
+}
+.badge-role {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 12px;
+    font-size: 0.8em;
+    font-weight: 600;
+}
+.badge-role.admin {
+    background: #1a1a2e;
+    color: #fff;
+}
+.badge-role.tecnico {
+    background: #e8eaf6;
+    color: #1a1a2e;
+}
+</style>
+
+<script>
+function toggleForm(tipo) {
+    if (tipo === 'novo') {
+        document.getElementById('modal-novo').style.display = 'flex';
+    }
+}
+
+function fecharModal(id) {
+    document.getElementById(id).style.display = 'none';
+}
+
+function editarUtilizador(id, username, nome, role) {
+    document.getElementById('edit-id').value = id;
+    document.getElementById('edit-username').value = username;
+    document.getElementById('edit-nome').value = nome;
+    document.getElementById('edit-role').value = role;
+    document.getElementById('modal-editar').style.display = 'flex';
+}
+
+// Fechar modal ao clicar fora
+document.addEventListener('click', function(e) {
+    if (e.target.classList.contains('modal-overlay')) {
+        e.target.style.display = 'none';
+    }
+});
+
+// Fechar com Escape
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+        document.querySelectorAll('.modal-overlay').forEach(function(m) {
+            m.style.display = 'none';
+        });
+    }
+});
 </script>
 
 <?php require_once __DIR__ . '/includes/footer.php'; ?>
