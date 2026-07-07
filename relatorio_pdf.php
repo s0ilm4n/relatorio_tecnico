@@ -73,6 +73,10 @@ function buildChecklistHTML($secoes, $titulos_secoes) {
 
 $checklist_html = buildChecklistHTML($secoes, $titulos_secoes);
 
+// Labels para exibição no PDF
+$tipo_label = $r['tipo'] === 'cctv' ? '📹 CCTV' : ($r['tipo'] === 'acessos' ? '🔐 Acessos' : '🚨 Alarme');
+$obra_label = ($r['tipo_obra'] ?? 'instalacao') === 'instalacao' ? 'Instalação' : 'Manutenção';
+
 $html = <<<HTML
 <!DOCTYPE html>
 <html lang="pt">
@@ -108,9 +112,7 @@ $html = <<<HTML
         <table>
             <tr><td class="label">Cliente:</td><td>{$r['cliente_nome']}</td><td class="label">Data:</td><td>{$r['data']}</td></tr>
             <tr><td class="label">Morada:</td><td>{$r['cliente_morada']}</td><td class="label">NIF:</td><td>{$r['cliente_nif']}</td></tr>
-            <tr><td class="label\">Técnico:</td><td>{$r['tecnico_nome']}</td><td class="label\">Tipo:</td><td>" . 
-                ($r['tipo'] === 'cctv' ? '📹 CCTV' : ($r['tipo'] === 'acessos' ? '🔐 Acessos' : '🚨 Alarme')) . 
-                " / " . (($r['tipo_obra'] ?? 'instalacao') === 'instalacao' ? 'Instalação' : 'Manutenção') . "</td></tr>
+            <tr><td class="label">Técnico:</td><td>{$r['tecnico_nome']}</td><td class="label">Tipo:</td><td>{$tipo_label} / {$obra_label}</td></tr>
         </table>
     </div>
 
