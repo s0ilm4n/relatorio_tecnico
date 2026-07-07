@@ -27,7 +27,9 @@ foreach ($todos_itens as $item) {
 require_once __DIR__ . '/includes/header.php';
 ?>
 
-<?php if ($sucesso): ?>
+<?php if ($sucesso == 2): ?>
+<div class="alert alert-success">Relatório atualizado com sucesso!</div>
+<?php elseif ($sucesso == 1): ?>
 <div class="alert alert-success">Relatório guardado com sucesso!</div>
 <?php endif; ?>
 
@@ -35,6 +37,7 @@ require_once __DIR__ . '/includes/header.php';
     <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:16px;">
         <h2 style="border:none;margin:0;padding:0;">Relatório #<?= $r['id'] ?></h2>
         <div style="display:flex;gap:8px;">
+            <a href="editar_relatorio.php?id=<?= $r['id'] ?>" class="btn btn-primary" style="background:#f57c00;border-color:#f57c00;">✏️ Editar</a>
             <a href="relatorio_pdf.php?id=<?= $r['id'] ?>" class="btn btn-primary">📄 Descarregar PDF</a>
             <a href="minuta.php?id=<?= $r['id'] ?>" class="btn btn-outline" style="color:#333;border-color:#ccc;">🖨️ Minuta</a>
         </div>
